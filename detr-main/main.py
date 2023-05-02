@@ -182,19 +182,20 @@ def main(args):
                                 normalize=True),
         scaling="robust",
     )
-    wandb.login(key='5e435a892a1324586da2f4425116de5d843168f3')
-    wandb.init(
-        # set the wandb project where this run will be logged
-        project="Titanus",
+    # wandb.login(key='5e435a892a1324586da2f4425116de5d843168f3')
+    # wandb.init(
+    #     # set the wandb project where this run will be logged
+    #     project="Titanus",
 
-        # track hyperparameters and run metadata
-        config={
-            "architecture": "DETR",
-            "dataset": "MROS",
-            "epochs": args.epochs,
-        }
-    )
+    #     # track hyperparameters and run metadata
+    #     config={
+    #         "architecture": "DETR",
+    #         "dataset": "MROS",
+    #         "epochs": args.epochs,
+    #     }
+    # )
 
+    
     dm = SleepEventDataModule(**params)
     dm.setup('fit')
     dataset_train = dm.train
