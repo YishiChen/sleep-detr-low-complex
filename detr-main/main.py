@@ -6,7 +6,7 @@ import os
 import random
 import time
 from pathlib import Path
-import wandb
+# import wandb
 
 import numpy as np
 import torch
@@ -158,13 +158,13 @@ def main(args):
     # data_dir="/scratch/s194277/mros/h5",
     # data_dir="/scratch/aneol/detr-mros/",
     #data_dir = "/scratch/s194277/mros/h5"
-    data_dir = "/scratch/aneol/detr-mros/"
+    data_dir = "/data"
 
     params = dict(
         data_dir=data_dir,
         batch_size=args.batch_size,
-        n_eval=500 if data_dir == "/scratch/aneol/detr-mros/" else 70,
-        n_test=500 if data_dir == "/scratch/aneol/detr-mros/" else 70,
+        n_eval=500 if data_dir == "/scratch/aneol/detr-mros/" else 1,
+        n_test=500 if data_dir == "/scratch/aneol/detr-mros/" else 1,
         num_workers=0,
         seed=1338,
         events={"ar": "Arousal", "lm": "Leg Movements", "sdb": "Sleep-disordered breathing"},
@@ -176,7 +176,7 @@ def main(args):
         fs=128,
         matching_overlap=0.5,
         n_jobs=-1,
-        n_records=2831 if data_dir == "/scratch/aneol/detr-mros/" else 355,
+        n_records=2831 if data_dir == "/scratch/aneol/detr-mros/" else 1,
         picks=['c3', 'c4', 'eogl', 'eogr', 'chin', 'legl', 'legr', "nasal", "abdo", "thor"],
         transform=STFTTransform(fs=128, segment_size=int(4.0 * 128), step_size=int(0.25 * 128), nfft=1024,
                                 normalize=True),
@@ -282,18 +282,18 @@ def main(args):
         test_stats, coco_evaluator = evaluate(
             model, criterion, postprocessors, data_loader_val, base_ds, device, args.output_dir
         )
-        wandb.log({
-            "train_loss": train_stats['loss'],
-            "train_class_error": train_stats['class_error'],
-            "train_loss_bbox": train_stats['loss_bbox'],
-            "train_loss_giou": train_stats['loss_giou']
-        })
-        wandb.log({
-            "test_loss": test_stats['loss'],
-            "test_class_error": test_stats['class_error'],
-            "test_loss_bbox": test_stats['loss_bbox'],
-            "test_loss_giou": test_stats['loss_giou']
-        })
+        # wandb.log({
+        #     "train_loss": train_stats['loss'],
+        #     "train_class_error": train_stats['class_error'],
+        #     "train_loss_bbox": train_stats['loss_bbox'],
+        #     "train_loss_giou": train_stats['loss_giou']
+        # })
+        # wandb.log({
+        #     "test_loss": test_stats['loss'],
+        #     "test_class_error": test_stats['class_error'],
+        #     "test_loss_bbox": test_stats['loss_bbox'],
+        #     "test_loss_giou": test_stats['loss_giou']
+        # })
 
         log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
                      **{f'test_{k}': v for k, v in test_stats.items()},
